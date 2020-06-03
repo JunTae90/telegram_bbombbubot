@@ -44,7 +44,11 @@ def update_post():
             for keyword in keyword_list:
                 if keyword in title:
                     link = 'http://www.ppomppu.co.kr/zboard/'+posts.find("td", { "valign" : "middle"}).find("a").attrs['href']
-                    message = '<뽐뿌 키워드 탐색>' + '\n' + title + '\n' + link
+                    text_req = requests.get(link)
+                    text_html = text_req.text
+                    text_soup = BeautifulSoup(text_html, 'html.parser')
+                    text_link = text_soup.find("div", {"class": "wordfix"}).find("a").text
+                    message = '<뽐뿌 키워드 탐색> ' + keyword + '\n' + title + '\n' + link + '\n(본문 링크) ' + text_link
                     user_list = my_dict[keyword]
                     for user in user_list:
                         try:
