@@ -40,6 +40,7 @@ def update_post():
             posts = soup.find("tr", {"class" : "list1"})
             current_num = posts.find("td", {"class" : "eng list_vspace"}).text
             title = posts.find("font", {"class" : "list_title"}).text
+            print(title)
             if latest_num != current_num:
                 latest_num = current_num
                 for keyword in keyword_list:
