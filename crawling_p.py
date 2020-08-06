@@ -34,7 +34,8 @@ def update_post():
         update_keyword()
         keyword_list = list(my_dict.keys())
         try:
-            req = requests.get('http://www.ppomppu.co.kr/zboard/zboard.php?id=ppomppu')
+            req_headers = {'User-Agent':('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36'),}
+            req = requests.get('http://www.ppomppu.co.kr/zboard/zboard.php?id=ppomppu', headers=req_headers)
             html = req.text
             soup = BeautifulSoup(html, 'html.parser')
             posts = soup.find("tr", {"class" : "list1"})

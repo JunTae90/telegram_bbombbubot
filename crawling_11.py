@@ -17,16 +17,17 @@ def update_post():
         user_list = update_user()
         try:
             link = 'http://www.11st.co.kr/product/SellerProductDetail.tmall?method=getSellerProductDetail&prdNo=2778024489&xfrom=&xzone='
-            req = requests.get(link)
+            req_headers = {'User-Agent':('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36'),}
+            req = requests.get(link, headers=req_headers)
             html = req.text
             soup = BeautifulSoup(html, 'html.parser')
-            info_guide = soup.find("p", {"class": "info_guide"})
-            print(info_guide)
-            if not info_guide:
-                soldout_current = False
-            else:
+            text_em_lg = soup.find("p", {"class", "text_em_lg"}).text
+            print(text_em_lg)
+            if "품절" in text_em_lg:
                 soldout_current = True
-
+            else:
+                soldout_current = False
+        
             if(soldout_latest != soldout_current):
                 soldout_latest = soldout_current
                 if(soldout_current):
