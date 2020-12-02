@@ -12,7 +12,7 @@ def update_user():
         return files
 
 def update_post():
-    soldout_latest = False
+    soldout_latest = True
     while True:
         user_list = update_user()
         try:
@@ -21,19 +21,25 @@ def update_post():
             req = requests.get(link, headers=req_headers)
             html = req.text
             soup = BeautifulSoup(html, 'html.parser')
-            text_em_lg = soup.find("p", {"class", "text_em_lg"}).text
-            print(text_em_lg)
-            if "품절" in text_em_lg:
+            print(soup)
+            em_lg = soup.find("p", {"class", "text_em_lg"})
+            if em_lg:
+                text_em_lg = em_lg.text
                 soldout_current = True
             else:
+                text_em_lg = em_lg
                 soldout_current = False
-        
+            print(text_em_lg)
             if(soldout_latest != soldout_current):
                 soldout_latest = soldout_current
                 if(soldout_current):
                     message = '11번가 해피머니 5만원권 매진 알림'
                 else:
                     message = '11번가 해피머니 5만원권 재입고 알림'
+
+
+
+                    
                 message += '\n' + link
                 for user in user_list:
                     try:
@@ -41,7 +47,8 @@ def update_post():
                     except telegram.error.Unauthorized:
                         os.remove(os.path.join(data_dir, user))
                         continue
-        except:
+        except Exception as e:
+            print(e)
             continue
         time.sleep(0.5)
         

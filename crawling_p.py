@@ -59,7 +59,8 @@ def update_post():
                             except telegram.error.Unauthorized:
                                 os.remove(os.path.join(data_dir, user))
                                 continue
-        except:
+        except Exception as e:
+            print(e)
             continue
         time.sleep(0.5)
 
